@@ -101,12 +101,12 @@ function setcurrentPeer(stream) {
 function setRemoteStream(stream) {
 
     let video = document.getElementById("remote-video");
-    try {
-        video.srcObject = stream;
-        video.play();
-    } catch (error) {
+    video.srcObject = stream;
+    video.play().catch(error => {
         alert("Bị chặn bởi tường lửa")
-    }
+        console.error('Lỗi khi phát:', error);
+    });
+
 
 }
 
