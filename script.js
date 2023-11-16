@@ -105,7 +105,6 @@ function setRemoteStream(stream) {
 
     video.addEventListener('error', (event) => {
         console.error('Lỗi khi phát:', event);
-        alert("Bị chặn bởi tường lửa");
     });
 
     video.play().catch(error => {
