@@ -1,22 +1,22 @@
-body{
+body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.title{
+.title {
     top: 0;
     width: 100%;
     max-width: 100%;
     z-index: 1;
     display: block;
-  
+
     position: absolute;
     background-color: #444444;
     color: white;
-   margin: 0;
+    margin: 0;
 }
 
-.entry-modal{
+.entry-modal {
     border: 1px solid #444444;
     width: 300px;
     margin: auto;
@@ -31,7 +31,7 @@ body{
     text-align: center;
 }
 
-#notification{
+#notification {
     position: absolute;
     z-index: 1;
     text-align: center;
@@ -44,17 +44,17 @@ body{
 }
 
 
-.room-input{
-  border: none;
-  padding:5px;
+.room-input {
+    border: none;
+    padding: 5px;
 }
 
-button{
+button {
     margin: 3px;
     padding: 5px;
 }
 
-#remote-video{
+#remote-video {
     top: 0;
     height: 100%;
     width: 100%;
@@ -63,7 +63,7 @@ button{
     position: absolute;
 }
 
-#local-video{
+#local-video {
     top: 60;
     width: 300;
     object-fit: cover;
@@ -73,10 +73,24 @@ button{
     background-color: #444444;
     position: absolute;
 }
-.meet-controls-bar{
+
+.meet-controls-bar {
     bottom: 0;
     background-color: black;
     left: 0;
     position: absolute;
     width: 100%;
+    display: flex;
+}
+
+#to-share-screen,
+#off-camera,
+#off-mic {
+    display: flex;
+}
+
+#stop-share-screen,
+#on-camera,
+#on-mic {
+    display: none;
 }

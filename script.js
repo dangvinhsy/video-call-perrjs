@@ -76,7 +76,7 @@ function createRoom() {
         hideModal()
         getUserMedia({ video: true, audio: true }, (stream) => {
             local_stream = stream;
-            setLocalStream(local_stream)
+            setcurrentPeer(local_stream)
         }, (err) => {
             console.log(err)
         })
@@ -91,7 +91,7 @@ function createRoom() {
     })
 }
 
-function setLocalStream(stream) {
+function setcurrentPeer(stream) {
 
     let video = document.getElementById("local-video");
     video.srcObject = stream;
@@ -161,7 +161,7 @@ function joinRoom() {
             console.log("Connected with Id: " + id)
             getUserMedia({ video: true, audio: true }, (stream) => {
                 local_stream = stream;
-                setLocalStream(local_stream)
+                setcurrentPeer(local_stream)
                 notify("Joining peer")
                 let call = peer.call(room_id, stream)
                 call.on('stream', (stream) => {
@@ -195,6 +195,8 @@ function startScreenShare() {
         }
         console.log(screenStream)
     })
+    document.querySelector("#to-share-screen").style.display = "none";
+    document.querySelector("#stop-share-screen").style.display = "block";
 }
 
 function stopScreenSharing() {
@@ -209,5 +211,105 @@ function stopScreenSharing() {
     screenStream.getTracks().forEach(function (track) {
         track.stop();
     });
-    screenSharing = false
+    screenSharing = false;
+    document.querySelector("#to-share-screen").style.display = "block";
+    document.querySelector("#stop-share-screen").style.display = "none";
+}
+
+function turnOffCamera() {
+    let videoTrack = local_stream.getVideoTracks()[0];
+
+    // Kiểm tra xem videoTrack có tồn tại không
+    if (videoTrack) {
+        // Tạm dừng video track
+        videoTrack.enabled = false;
+
+        // Lặp qua tất cả các sender trong peerConnection của currentPeer
+        currentPeer.peerConnection.getSenders().forEach((sender) => {
+            // Kiểm tra xem sender có loại track giống với videoTrack không
+            if (sender.track && sender.track.kind === videoTrack.kind) {
+                // Thay thế track của sender bằng videoTrack
+                sender.replaceTrack(videoTrack);
+            }
+        });
+    } else {
+        console.error('Không tìm thấy track video trong local_stream.');
+    }
+
+    document.querySelector("#off-camera").style.display = "none";
+    document.querySelector("#on-camera").style.display = "block";
+}
+
+function turnOnCamera() {
+    // Lấy track video từ local_stream
+    let videoTrack = local_stream.getVideoTracks()[0];
+
+    // Kiểm tra xem videoTrack có tồn tại không
+    if (videoTrack) {
+        // Bật lại video track
+        videoTrack.enabled = true;
+
+        // Lặp qua tất cả các sender trong peerConnection của currentPeer
+        currentPeer.peerConnection.getSenders().forEach((sender) => {
+            // Kiểm tra xem sender có loại track giống với videoTrack không
+            if (sender.track && sender.track.kind === videoTrack.kind) {
+                // Thay thế track của sender bằng videoTrack
+                sender.replaceTrack(videoTrack);
+            }
+        });
+    } else {
+        console.error('Không tìm thấy track video trong local_stream.');
+    }
+
+    document.querySelector("#off-camera").style.display = "block";
+    document.querySelector("#on-camera").style.display = "none";
+}
+
+function turnOnMicro() {
+    // Lấy track âm thanh từ local_stream
+    let audioTrack = local_stream.getAudioTracks()[0];
+
+    // Kiểm tra xem audioTrack có tồn tại không
+    if (audioTrack) {
+        // Bật lại audio track
+        audioTrack.enabled = true;
+
+        // Lặp qua tất cả các sender trong peerConnection của currentPeer
+        currentPeer.peerConnection.getSenders().forEach((sender) => {
+            // Kiểm tra xem sender có loại track giống với audioTrack không
+            if (sender.track && sender.track.kind === audioTrack.kind) {
+                // Thay thế track của sender bằng audioTrack
+                sender.replaceTrack(audioTrack);
+            }
+        });
+    } else {
+        console.error('Không tìm thấy track âm thanh trong local_stream.');
+    }
+    document.querySelector("#off-mic").style.display = "block";
+    document.querySelector("#on-mic").style.display = "none";
+}
+
+
+function turnOffMicro() {
+    // Lấy track âm thanh từ local_stream
+    let audioTrack = local_stream.getAudioTracks()[0];
+
+    // Kiểm tra xem audioTrack có tồn tại không
+    if (audioTrack) {
+        // Tạm dừng audio track
+        audioTrack.enabled = false;
+
+        // Lặp qua tất cả các sender trong peerConnection của currentPeer
+        currentPeer.peerConnection.getSenders().forEach((sender) => {
+            // Kiểm tra xem sender có loại track giống với audioTrack không
+            if (sender.track && sender.track.kind === audioTrack.kind) {
+                // Thay thế track của sender bằng audioTrack
+                sender.replaceTrack(audioTrack);
+            }
+        });
+    } else {
+        console.error('Không tìm thấy track âm thanh trong local_stream.');
+    }
+    document.querySelector("#off-mic").style.display = "none";
+    document.querySelector("#on-mic").style.display = "block";
 }
