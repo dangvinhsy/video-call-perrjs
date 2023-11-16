@@ -83,6 +83,7 @@ function createRoom() {
         notify("Waiting for peer to join.")
     })
     peer.on('call', (call) => {
+        console.log("llllllllllllll")
         call.answer(local_stream);
         call.on('stream', (stream) => {
             setRemoteStream(stream)
@@ -101,16 +102,15 @@ function setcurrentPeer(stream) {
 function setRemoteStream(stream) {
 
     let video = document.getElementById("remote-video");
+
     video.srcObject = stream;
+    // Kiểm tra xem có lỗi khi thiết lập stream không
+    if (video.srcObject !== stream) {
+        alert("BI chan")
+    }
 
-    video.addEventListener('error', (event) => {
-        console.error('Lỗi khi phát:', event);
-    });
 
-    video.play().catch(error => {
-        alert("Bị chặn bởi tường lửa")
-        console.error('Lỗi khi phát:', error);
-    });
+    video.play()
 
 
 }
