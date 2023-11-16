@@ -101,8 +101,13 @@ function setcurrentPeer(stream) {
 function setRemoteStream(stream) {
 
     let video = document.getElementById("remote-video");
-    video.srcObject = stream;
-    video.play();
+    try {
+        video.srcObject = stream;
+        video.play();
+    } catch (error) {
+        alert("Bị chặn bởi tường lửa")
+    }
+
 }
 
 function hideModal() {
