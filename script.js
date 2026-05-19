@@ -1,4 +1,4 @@
-const url = 'https://webrtc-500c0-default-rtdb.asia-southeast1.firebasedatabase.app/call';
+const url = 'https://meeting-d45d2-default-rtdb.firebaseio.com/call';
 let username = prompt("enter username: ");
 const PRE = "DELTA"
 const SUF = "MEET"
